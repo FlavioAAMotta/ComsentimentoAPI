@@ -3,11 +3,13 @@ import { NoticeBusiness } from "../business/NoticeBusiness";
 import { NoticeController } from "../controller/NoticeController";
 import { NoticeDatabase } from "../data/NoticeDatabase";
 import { IdGenerator } from "../services/idGenerator";
+import { Authenticator } from "../services/Authenticator";
 
 export const noticeRouter = express.Router();
 const noticeBusiness = new NoticeBusiness(
     new NoticeDatabase(),
-    new IdGenerator()
+    new IdGenerator(),
+    new Authenticator()
 );
 const noticeController = new NoticeController(noticeBusiness);
 

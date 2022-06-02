@@ -10,12 +10,15 @@ export class NoticeController {
     createNotice = async (req: Request, res: Response) => {
         try {
             const { noticeTitle, noticeDescription, noticeOpeningDate, noticePDFDetails, noticeStatus } = req.body;
+            const token = req.headers.authorization as string;
             const result = await this.noticeBusiness.createNotice(
                 noticeTitle,
                 noticeDescription,
                 noticeOpeningDate,
                 noticePDFDetails,
-                noticeStatus);
+                noticeStatus,
+                token
+            );
             res.status(201).send(result)
         } catch (error: any) {
             if (error instanceof CustomError) {
@@ -69,7 +72,7 @@ export class NoticeController {
             res.status(statusCode || 500).send({ message });
         }
     }
-    
+
     deleteNotice = async (req: Request, res: Response) => {
         try {
             const noticeID = req.params.id

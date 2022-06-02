@@ -1,3 +1,4 @@
+import { Authenticator } from '../services/Authenticator';
 import { Notice } from './../model/Notice';
 import { IdGenerator } from './../services/idGenerator';
 import { NoticeDatabase } from './../data/NoticeDatabase';
@@ -6,7 +7,8 @@ export class NoticeBusiness {
 
     constructor(
         private noticeDatabase: NoticeDatabase,
-        private idGenerator: IdGenerator
+        private idGenerator: IdGenerator,
+        private authenticator: Authenticator
     ) { }
 
     createNotice = async (
@@ -14,11 +16,19 @@ export class NoticeBusiness {
         noticeDescription: string,
         noticeOpeningDate: string,
         noticePDFDetails: string,
-        noticeStatus: boolean
+        noticeStatus: boolean,
+        token: string
     ) => {
         try {
             if (!noticeTitle || !noticeDescription || !noticeOpeningDate || !noticePDFDetails || !noticeStatus) {
                 throw new CustomError(422, "Missing input");
+            }
+            if(!token){
+                throw new CustomError(401, "Missing token in 'Authorization' header")
+            }
+            const validateToken = this.authenticator.getTokenData(token)
+            if(!validateToken){
+                throw new CustomError(401, "Invalid token")
             }
             const noticeId = this.idGenerator.generate();
             let notice = new Notice(
@@ -30,10 +40,11 @@ export class NoticeBusiness {
                 noticeStatus)
             await this.noticeDatabase.createNotice(notice)
             return notice;
-        } catch (error) {
+        } catch (error:any) {
             if (error instanceof CustomError) {
                 throw new CustomError(error.statusCode, error.message)
             }
+            throw new Error(error)
         }
 
     }

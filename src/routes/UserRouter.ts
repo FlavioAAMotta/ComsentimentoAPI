@@ -4,14 +4,14 @@ import { UserController } from "../controller/UserController";
 import { UserDatabase } from "../data/UserDatabase";
 import { HashGenerator } from "../services/hashGenerator";
 import { IdGenerator } from "../services/idGenerator";
-import { TokenGenerator } from "../services/tokenGenerator";
+import { Authenticator } from "../services/Authenticator";
 
 export const userRouter = express.Router();
 const userBusiness = new UserBusiness(
     new UserDatabase(),
     new HashGenerator(),
     new IdGenerator(),
-    new TokenGenerator()
+    new Authenticator()
 );
 const userController = new UserController(userBusiness);
 

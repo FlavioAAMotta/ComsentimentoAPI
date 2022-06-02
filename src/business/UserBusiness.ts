@@ -1,7 +1,7 @@
 import { CustomError } from './../errors/CustomError';
 import { IdGenerator } from './../services/idGenerator';
 import { HashGenerator } from './../services/hashGenerator';
-import { TokenGenerator } from './../services/tokenGenerator';
+import { Authenticator } from '../services/Authenticator';
 import { UserDatabase } from './../data/UserDatabase';
 import { User } from './../model/User';
 export class UserBusiness {
@@ -9,7 +9,7 @@ export class UserBusiness {
         private userDatabase: UserDatabase,
         private hashGenerator: HashGenerator,
         private idGenerator: IdGenerator,
-        private tokenGenerator: TokenGenerator
+        private authenticator: Authenticator
     ) { }
 
     createUser = async (
@@ -30,7 +30,7 @@ export class UserBusiness {
                 hashedPassword
             )
             await this.userDatabase.createUser(newUser)
-            const token = this.tokenGenerator.generate({ id: userId })
+            const token = this.authenticator.generateToken({ id: userId })
             return token;
         } catch (error) {
             if (error instanceof CustomError) {
@@ -55,7 +55,7 @@ export class UserBusiness {
                 throw new CustomError(401, "Incorrect credentials")
             }
 
-            const token = this.tokenGenerator.generate({ id: user.userId });
+            const token = this.authenticator.generateToken({ id: user.userId });
             return token
         } catch (error) {
             if (error instanceof CustomError) {
