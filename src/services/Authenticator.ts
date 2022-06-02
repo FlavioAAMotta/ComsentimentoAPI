@@ -16,10 +16,15 @@ export class Authenticator {
    getTokenData = (
       token: string
    ): AuthenticationData => {
-      return jwt.verify(
+      try{
+      var decoded = jwt.verify(
          token,
          process.env.JWT_KEY as string
-      ) as AuthenticationData
+      )
+      return decoded as AuthenticationData
+   }catch (error:any){
+      return {id:""} as AuthenticationData
+   }
    }
 }
 

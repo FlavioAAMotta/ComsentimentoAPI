@@ -27,7 +27,7 @@ export class NoticeBusiness {
                 throw new CustomError(401, "Missing token in 'Authorization' header")
             }
             const validateToken = this.authenticator.getTokenData(token)
-            if(!validateToken){
+            if(!validateToken.id){
                 throw new CustomError(401, "Invalid token")
             }
             const noticeId = this.idGenerator.generate();
