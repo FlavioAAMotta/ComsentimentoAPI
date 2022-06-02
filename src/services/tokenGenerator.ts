@@ -9,8 +9,7 @@ export class TokenGenerator {
   public generate = (input: AuthenticationData): string => {
     const newToken = jwt.sign(
       {
-        id: input.id,
-        role: input.role,
+        id: input.id
       },
       process.env.JWT_KEY as string,
       {
@@ -29,5 +28,4 @@ export class TokenGenerator {
 
 export interface AuthenticationData {
   id: string;
-  role: string;
 }

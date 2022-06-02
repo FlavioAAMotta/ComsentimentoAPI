@@ -25,10 +25,9 @@ export class NoticeController {
         }
     }
 
-    getNoticeById = async (req: Request, res: Response) => {
+    getAllNotices = async (req: Request, res: Response) => {
         try {
-            const noticeID = req.params.id
-            const result = await this.noticeBusiness.getNoticeById(noticeID)
+            const result = await this.noticeBusiness.getAllNotices()
             res.status(200).send(result)
         } catch (error: any) {
             if (error instanceof CustomError) {
@@ -38,9 +37,10 @@ export class NoticeController {
         }
     }
 
-    getAllNotices = async (req: Request, res: Response) => {
+    getNoticeById = async (req: Request, res: Response) => {
         try {
-            const result = await this.noticeBusiness.getAllNotices()
+            const noticeID = req.params.id
+            const result = await this.noticeBusiness.getNoticeById(noticeID)
             res.status(200).send(result)
         } catch (error: any) {
             if (error instanceof CustomError) {

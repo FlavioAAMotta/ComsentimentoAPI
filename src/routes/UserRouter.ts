@@ -6,7 +6,7 @@ import { HashGenerator } from "../services/hashGenerator";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
 
-export const UserRouter = express.Router();
+export const userRouter = express.Router();
 const userBusiness = new UserBusiness(
     new UserDatabase(),
     new HashGenerator(),
@@ -15,8 +15,9 @@ const userBusiness = new UserBusiness(
 );
 const userController = new UserController(userBusiness);
 
-// userRouter.post("/", userController.createNotice);
-// userRouter.get("/", userController.getAllNotices);
-// userRouter.get("/:id", userController.getNoticeById);
-// userRouter.put("/:id", userController.updateNotice);
-// userRouter.delete("/:id", userController.deleteNotice);
+userRouter.post("/", userController.createUser);
+//userRouter.post("/:id", userController.signUp);
+userRouter.get("/", userController.getAllUsers);
+userRouter.get("/:id", userController.getUserById);
+// userRouter.put("/:id", userController.updateUser);
+// userRouter.delete("/:id", userController.deleteUser);
