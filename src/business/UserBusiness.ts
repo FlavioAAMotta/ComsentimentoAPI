@@ -3,7 +3,7 @@ import { IdGenerator } from './../services/idGenerator';
 import { HashGenerator } from './../services/hashGenerator';
 import { TokenGenerator } from './../services/tokenGenerator';
 import { UserDatabase } from './../data/UserDatabase';
-import { User } from '../model/User';
+import { User } from './../model/User';
 export class UserBusiness {
     constructor(
         private userDatabase: UserDatabase,
@@ -32,6 +32,31 @@ export class UserBusiness {
             await this.userDatabase.createUser(newUser)
             const token = this.tokenGenerator.generate({ id: userId })
             return token;
+        } catch (error) {
+            if (error instanceof CustomError) {
+                throw new CustomError(error.statusCode, error.message)
+            }
+        }
+    }
+
+    login = async (userEmail: string, userPassword: string) => {
+        try {
+            if (!userEmail || !userPassword) {
+                throw new CustomError(422, "Please fill all fields")
+            };
+
+            const user: User = await this.userDatabase.findUserByEmail(userEmail) as User;
+            if (!user) {
+                throw new CustomError(401, "E-mail not registered")
+            };
+
+            const correctPassword = this.hashGenerator.compareHash(userPassword, user.userPassword)
+            if (!correctPassword) {
+                throw new CustomError(401, "Incorrect credentials")
+            }
+
+            const token = this.tokenGenerator.generate({ id: user.userId });
+            return token
         } catch (error) {
             if (error instanceof CustomError) {
                 throw new CustomError(error.statusCode, error.message)
@@ -81,7 +106,7 @@ export class UserBusiness {
             if (!userInDB) {
                 throw new CustomError(404, "User not found");
             }
-            
+
             const hashedPassword = await this.hashGenerator.hash(userPassword);
 
             let updatedUser = new User(

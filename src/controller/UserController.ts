@@ -24,6 +24,20 @@ export class UserController {
         }
     }
 
+    login = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { email, password } = req.body
+            const token = await this.userBusiness.login(email, password)
+            res.status(200).send({ message: token })
+
+        } catch (error: any) {
+            if (error instanceof CustomError) {
+                var { statusCode, message } = error
+            }
+            res.status(statusCode || 500).send({ message });
+        }
+    };
+
     getAllUsers = async (req: Request, res: Response) => {
         try {
             const result = await this.userBusiness.getAllUsers()

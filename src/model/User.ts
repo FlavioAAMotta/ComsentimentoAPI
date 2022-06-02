@@ -1,24 +1,25 @@
 export class User {
     constructor(
-        private userId: string,
-        private userName: string,
-        private userEmail: string,
-        private userPassword: string        
+        public userId: string,
+        public userName: string,
+        public userEmail: string,
+        public userPassword: string        
     ) { }
 
-    public getId(): string {
+    getId = (): string =>{
         return this.userId;
     }
-
-    public getName(): string {
+    
+    getName = (): string =>{
         return this.userName;
     }
 
-    public getEmail(): string {
+    getEmail(): string {
         return this.userEmail;
     }
 
-    public getPassword(): string {
+    getPassword = (): string=>{
+        console.log("oi")
         return this.userPassword;
     }
 
