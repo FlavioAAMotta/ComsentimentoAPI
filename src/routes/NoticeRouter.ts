@@ -2,9 +2,7 @@ import express from "express";
 import { NoticeBusiness } from "../business/NoticeBusiness";
 import { NoticeController } from "../controller/NoticeController";
 import { NoticeDatabase } from "../data/NoticeDatabase";
-import { HashGenerator } from "../services/hashGenerator";
 import { IdGenerator } from "../services/idGenerator";
-import { TokenGenerator } from "../services/tokenGenerator";
 
 export const noticeRouter = express.Router();
 const noticeBusiness = new NoticeBusiness(
