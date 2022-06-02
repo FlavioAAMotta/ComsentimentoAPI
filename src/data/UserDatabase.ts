@@ -25,10 +25,26 @@ export class UserDatabase extends BaseDatabase {
 
     getUserById = async (userId: string): Promise<User> => {
         try {
-          const [result] = await this
+            const [result] = await this
+                .connection(this.TABLE_NAME)
+                .where({ userId })
+            return result as User
+        } catch (error: any) {
+            throw new Error(error.sqlMessage || error.message)
+        }
+    }
+
+    updateUser = async (user: User): Promise<void> => {
+        try {
+          let userId = user.getId()
+          await this
             .connection(this.TABLE_NAME)
+            .update({
+                userName: user.getName(),
+                userEmail: user.getEmail(),
+                userPassword: user.getPassword()
+            })
             .where({ userId })
-          return result as User
         } catch (error: any) {
           throw new Error(error.sqlMessage || error.message)
         }

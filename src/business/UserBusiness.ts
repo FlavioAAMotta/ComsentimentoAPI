@@ -39,7 +39,7 @@ export class UserBusiness {
         }
     }
 
-    getAllUsers = async()=>{
+    getAllUsers = async () => {
         try {
             const result = this.userDatabase.getAllUsers();
             return result
@@ -50,13 +50,13 @@ export class UserBusiness {
         }
     }
 
-    getUserById = async(userId: string)=>{
+    getUserById = async (userId: string) => {
         try {
             if (!userId) {
                 throw new CustomError(422, "Missing id");
             }
             const result = this.userDatabase.getUserById(userId);
-            if(!result) {
+            if (!result) {
                 throw new CustomError(404, "User not found");
             }
             return result
@@ -65,5 +65,38 @@ export class UserBusiness {
                 throw new CustomError(error.statusCode, error.message)
             }
         }
+    }
+
+    updateUser = async (
+        userId: string,
+        userName: string,
+        userEmail: string,
+        userPassword: string
+    ) => {
+        try {
+            if (!userName && !userEmail && !userPassword) {
+                throw new CustomError(422, "Missing input");
+            }
+            let userInDB = await this.userDatabase.getUserById(userId)
+            if (!userInDB) {
+                throw new CustomError(404, "User not found");
+            }
+            
+            const hashedPassword = await this.hashGenerator.hash(userPassword);
+
+            let updatedUser = new User(
+                userId,
+                userName,
+                userEmail,
+                userPassword && hashedPassword || userPassword
+            )
+            const result = await this.userDatabase.updateUser(updatedUser)
+            return result;
+        } catch (error) {
+            if (error instanceof CustomError) {
+                throw new CustomError(error.statusCode, error.message)
+            }
+        }
+
     }
 }

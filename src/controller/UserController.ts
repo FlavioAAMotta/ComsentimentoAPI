@@ -48,4 +48,22 @@ export class UserController {
             res.status(statusCode || 500).send({ message });
         }
     }
+
+    updateUser = async (req: Request, res: Response) => {
+        try {
+            const userId = req.params.id
+            const { userName, userEmail, userPassword } = req.body;
+            const result = await this.userBusiness.updateUser(
+                userId,
+                userName,
+                userEmail,
+                userPassword);
+            res.status(200).send(result)
+        } catch (error: any) {
+            if (error instanceof CustomError) {
+                var { statusCode, message } = error
+            }
+            res.status(statusCode || 500).send({ message });
+        }
+    }
 }

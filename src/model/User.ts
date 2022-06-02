@@ -14,11 +14,11 @@ export class User {
         return this.userName;
     }
 
-    public getNoticeEmail(): string {
+    public getEmail(): string {
         return this.userEmail;
     }
 
-    public getNoticePassword(): string {
+    public getPassword(): string {
         return this.userPassword;
     }
 
