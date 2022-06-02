@@ -2,9 +2,11 @@ import { Request, Response } from "express";
 import { NoticeBusiness} from "../business/NoticeBusiness"
 
 export class NoticeController{
-    constructor(private noticeBusiness: NoticeBusiness){}
-
-    public async createNotice(req: Request, res: Response){
+    constructor(
+        private noticeBusiness: NoticeBusiness
+    ){}
+    
+    createNotice = async(req: Request, res: Response) =>{
         try{ 
             const {noticeTitle, noticeDescription, noticeOpeningDate, noticePDFDetails, noticeStatus} = req.body;
             const result = await this.noticeBusiness.createNotice(

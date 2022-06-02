@@ -1,14 +1,14 @@
 export class Notice {
     constructor(
-        private id: string,
+        private noticeId: string,
         private noticeTitle: string,
         private noticeDescription: string,
-        private noticeOpeningDate: Date,
-        private noticePDFDetails: File,
+        private noticeOpeningDate: string,
+        private noticePDFDetailsPath: string,
         private noticeStatus: boolean
     ) { }
     public getId(): string {
-        return this.id;
+        return this.noticeId;
     }
 
     public getNoticeTitle(): string {
@@ -19,12 +19,12 @@ export class Notice {
         return this.noticeDescription;
     }
 
-    public getNoticeOpeningDate(): Date {
+    public getNoticeOpeningDate(): string {
         return this.noticeOpeningDate;
     }
 
-    public getNoticePDFDetails(): File {
-        return this.noticePDFDetails;
+    public getNoticePDFDetails(): string {
+        return this.noticePDFDetailsPath;
     }
     public getNoticeStatus(): boolean {
         return this.noticeStatus;

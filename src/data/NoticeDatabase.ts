@@ -1,28 +1,17 @@
 import { Notice } from './../model/Notice';
-import BaseDatabase from './BaseDatabase';
+import { BaseDatabase } from './BaseDatabase';
 export class NoticeDatabase extends BaseDatabase {
-    protected tableName: string = "Notices";
+  protected TABLE_NAME: string = "Notices";
 
-    public async createNotice(notice: Notice): Promise<void> {
-        try {
-            await BaseDatabase.connection.raw(`
-              INSERT INTO ${this.tableName} (noticeId,
-                noticeTitle,
-                noticeDescription,
-                noticeOpeningDate,
-                noticePDFDetails,
-                noticeStatus)
-              VALUES (
-              '${notice.getId()}', 
-              '${notice.getNoticeTitle()}', 
-              '${notice.getNoticeDescription()}',
-              '${notice.getNoticeOpeningDate()}', 
-              '${notice.getNoticePDFDetails()}',
-              '${notice.getNoticeStatus()}'
-              )`
-            );
-        } catch (error: any) {
-            throw new Error(error.sqlMessage || error.message)
-        }
+  createNotice = async (notice: Notice): Promise<void> => {
+    try {
+      console.log(this.TABLE_NAME)
+      console.log(notice)
+      await this
+        .connection(this.TABLE_NAME)
+        .insert(notice)
+    } catch (error: any) {
+      throw new Error(error.sqlMessage || error.message)
     }
+  }
 }

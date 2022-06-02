@@ -11,12 +11,9 @@ const noticeBusiness = new NoticeBusiness(
     new NoticeDatabase(),
     new IdGenerator()
 );
-const noticeController = new NoticeController(
-    noticeBusiness
-);
+const noticeController = new NoticeController(noticeBusiness);
 
-noticeRouter.post("/notice", noticeController.createNotice);
-// noticeRouter.get("/notice/:id", noticeController.getNotice());
+noticeRouter.post("/", noticeController.createNotice);
 // noticeRouter.get("/notice", noticeController.getAllNotices());
 // noticeRouter.put("/notice", noticeController.updateNotice());
 // noticeRouter.delete("/notice", noticeController.deleteNotice());
