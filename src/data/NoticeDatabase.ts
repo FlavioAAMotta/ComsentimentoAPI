@@ -39,8 +39,25 @@ export class NoticeDatabase extends BaseDatabase {
       let noticeId = notice.getId()
       await this
         .connection(this.TABLE_NAME)
+        .update({
+          noticeTitle: notice.getNoticeTitle(),
+          noticeDescription: notice.getNoticeDescription(),
+          noticeOpeningDate: notice.getNoticeOpeningDate(),
+          noticePDFDetails: notice.getNoticePDFDetails(),
+          noticeStatus: notice.getNoticeStatus()
+        })
         .where({ noticeId })
-        .update(notice)
+    } catch (error: any) {
+      throw new Error(error.sqlMessage || error.message)
+    }
+  }
+
+  deleteNotice = async (noticeId: string): Promise<void> => {
+    try {
+      await this
+        .connection(this.TABLE_NAME)
+        .where({ noticeId })
+        .delete()
     } catch (error: any) {
       throw new Error(error.sqlMessage || error.message)
     }

@@ -19,9 +19,8 @@ export class NoticeController {
             res.status(201).send(result)
         } catch (error: any) {
             if (error instanceof CustomError) {
-                throw new CustomError(error.statusCode, error.message)
+                var { statusCode, message } = error
             }
-            const { statusCode, message } = error
             res.status(statusCode || 500).send({ message });
         }
     }
@@ -33,9 +32,8 @@ export class NoticeController {
             res.status(200).send(result)
         } catch (error: any) {
             if (error instanceof CustomError) {
-                throw new CustomError(error.statusCode, error.message)
+                var { statusCode, message } = error
             }
-            const { statusCode, message } = error
             res.status(statusCode || 500).send({ message });
         }
     }
@@ -46,13 +44,12 @@ export class NoticeController {
             res.status(200).send(result)
         } catch (error: any) {
             if (error instanceof CustomError) {
-                throw new CustomError(error.statusCode, error.message)
+                var { statusCode, message } = error
             }
-            const { statusCode, message } = error
             res.status(statusCode || 500).send({ message });
         }
     }
-    
+
     updateNotice = async (req: Request, res: Response) => {
         try {
             const noticeID = req.params.id
@@ -67,14 +64,23 @@ export class NoticeController {
             res.status(200).send(result)
         } catch (error: any) {
             if (error instanceof CustomError) {
-                throw new CustomError(error.statusCode, error.message)
+                var { statusCode, message } = error
             }
-            const { statusCode, message } = error
             res.status(statusCode || 500).send({ message });
         }
     }
+    
     deleteNotice = async (req: Request, res: Response) => {
-        throw new Error("Method not implemented.");
+        try {
+            const noticeID = req.params.id
+            await this.noticeBusiness.deleteNotice(noticeID)
+            res.status(200).send("Notice deleted successfully")
+        } catch (error: any) {
+            if (error instanceof CustomError) {
+                var { statusCode, message } = error
+            }
+            res.status(statusCode || 500).send({ message });
+        }
     }
 
 }

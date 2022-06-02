@@ -48,6 +48,7 @@ export class NoticeBusiness {
             }
         }
     }
+
     getNoticeById = async(noticeId: string)=>{
         try {
             if (!noticeId) {
@@ -55,7 +56,7 @@ export class NoticeBusiness {
             }
             const result = this.noticeDatabase.getNoticeById(noticeId);
             if(!result) {
-                throw new CustomError(409, "Missing id");
+                throw new CustomError(404, "Notice not found");
             }
             return result
         } catch (error) {
@@ -64,6 +65,7 @@ export class NoticeBusiness {
             }
         }
     }
+
     updateNotice = async (
         noticeId: string,
         noticeTitle: string,
@@ -78,7 +80,7 @@ export class NoticeBusiness {
             }
             let noticeinDB = await this.noticeDatabase.getNoticeById(noticeId)
             if(!noticeinDB) {
-                throw new CustomError(404, "Id not found");
+                throw new CustomError(404, "Notice not found");
             }
             const notice = new Notice(
                 noticeId,
@@ -87,8 +89,8 @@ export class NoticeBusiness {
                 noticeOpeningDate,
                 noticePDFDetails,
                 noticeStatus)
-            await this.noticeDatabase.updateNotice(notice)
-            return notice;
+            const result = await this.noticeDatabase.updateNotice(notice)
+            return result;
         } catch (error) {
             if (error instanceof CustomError) {
                 throw new CustomError(error.statusCode, error.message)
@@ -96,6 +98,19 @@ export class NoticeBusiness {
         }
     
     }
-    
+
+    deleteNotice = async(noticeId: string)=>{
+        try {
+            if (!noticeId) {
+                throw new CustomError(422, "Missing id");
+            }
+            const result = this.noticeDatabase.deleteNotice(noticeId);
+            return result
+        } catch (error) {
+            if (error instanceof CustomError) {
+                throw new CustomError(error.statusCode, error.message)
+            }
+        }
+    }
     
 }
