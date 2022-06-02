@@ -52,8 +52,26 @@ export class NoticeController {
             res.status(statusCode || 500).send({ message });
         }
     }
+    
     updateNotice = async (req: Request, res: Response) => {
-        throw new Error("Method not implemented.");
+        try {
+            const noticeID = req.params.id
+            const { noticeTitle, noticeDescription, noticeOpeningDate, noticePDFDetails, noticeStatus } = req.body;
+            const result = await this.noticeBusiness.updateNotice(
+                noticeID,
+                noticeTitle,
+                noticeDescription,
+                noticeOpeningDate,
+                noticePDFDetails,
+                noticeStatus);
+            res.status(200).send(result)
+        } catch (error: any) {
+            if (error instanceof CustomError) {
+                throw new CustomError(error.statusCode, error.message)
+            }
+            const { statusCode, message } = error
+            res.status(statusCode || 500).send({ message });
+        }
     }
     deleteNotice = async (req: Request, res: Response) => {
         throw new Error("Method not implemented.");

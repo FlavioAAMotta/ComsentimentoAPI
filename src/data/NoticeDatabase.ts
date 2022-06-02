@@ -1,9 +1,9 @@
 import { Notice } from './../model/Notice';
 import { BaseDatabase } from './BaseDatabase';
 export class NoticeDatabase extends BaseDatabase {
-  
+
   protected TABLE_NAME: string = "Notices";
-  
+
   createNotice = async (notice: Notice): Promise<void> => {
     try {
       await this
@@ -14,23 +14,35 @@ export class NoticeDatabase extends BaseDatabase {
     }
   }
 
-  getAllNotices = async():Promise<Notice[]> =>{
-      try{
-        return await this
+  getAllNotices = async (): Promise<Notice[]> => {
+    try {
+      return await this
         .connection(this.TABLE_NAME) as Notice[]
-      }catch (error: any) {
-        throw new Error(error.sqlMessage || error.message)
-      }
+    } catch (error: any) {
+      throw new Error(error.sqlMessage || error.message)
+    }
   }
 
-  getNoticeById = async(noticeId:string):Promise<Notice> =>{
-      try{
-        const [result] = await this
+  getNoticeById = async (noticeId: string): Promise<Notice> => {
+    try {
+      const [result] = await this
         .connection(this.TABLE_NAME)
-        .where({noticeId})
-        return result as Notice
-      }catch (error: any) {
-        throw new Error(error.sqlMessage || error.message)
-      }
+        .where({ noticeId })
+      return result as Notice
+    } catch (error: any) {
+      throw new Error(error.sqlMessage || error.message)
+    }
+  }
+
+  updateNotice = async (notice: Notice): Promise<void> => {
+    try {
+      let noticeId = notice.getId()
+      await this
+        .connection(this.TABLE_NAME)
+        .where({ noticeId })
+        .update(notice)
+    } catch (error: any) {
+      throw new Error(error.sqlMessage || error.message)
+    }
   }
 }

@@ -16,5 +16,5 @@ const noticeController = new NoticeController(noticeBusiness);
 noticeRouter.post("/", noticeController.createNotice);
 noticeRouter.get("/", noticeController.getAllNotices);
 noticeRouter.get("/:id", noticeController.getNoticeById);
-// noticeRouter.put("/", noticeController.updateNotice);
+noticeRouter.put("/:id", noticeController.updateNotice);
 // noticeRouter.delete("/", noticeController.deleteNotice);
