@@ -38,4 +38,32 @@ export class NoticeBusiness {
 
     }
 
+    getAllNotices = async()=>{
+        try {
+            const result = this.noticeDatabase.getAllNotices();
+            return result
+        } catch (error) {
+            if (error instanceof CustomError) {
+                throw new CustomError(error.statusCode, error.message)
+            }
+        }
+    }
+    getNoticeById = async(noticeId: string)=>{
+        try {
+            if (!noticeId) {
+                throw new CustomError(422, "Missing id");
+            }
+            const result = this.noticeDatabase.getNoticeById(noticeId);
+            if(!result) {
+                throw new CustomError(409, "Missing id");
+            }
+            return result
+        } catch (error) {
+            if (error instanceof CustomError) {
+                throw new CustomError(error.statusCode, error.message)
+            }
+        }
+    }
+
+
 }
