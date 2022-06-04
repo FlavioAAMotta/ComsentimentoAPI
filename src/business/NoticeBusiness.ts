@@ -3,6 +3,7 @@ import { Notice } from './../model/Notice';
 import { IdGenerator } from './../services/idGenerator';
 import { NoticeDatabase } from './../data/NoticeDatabase';
 import { CustomError } from './../errors/CustomError';
+import { dateFormatter } from '../Utils/DateFormatter';
 export class NoticeBusiness {
 
     constructor(
@@ -51,15 +52,16 @@ export class NoticeBusiness {
 
     getAllNotices = async (limit: number, offset: number) => {
         try {
-            if(!limit){
+            if (!limit) {
                 limit = 10
             }
-            if(!offset){
+            if (!offset) {
                 offset = 0
             }
 
-            const result = this.noticeDatabase.getAllNotices(limit, offset);
-            return result
+            let results = await this.noticeDatabase.getAllNotices(limit, offset);
+            results = dateFormatter(results)
+            return results
         } catch (error) {
             if (error instanceof CustomError) {
                 throw new CustomError(error.statusCode, error.message)
@@ -72,10 +74,11 @@ export class NoticeBusiness {
             if (!noticeId) {
                 throw new CustomError(422, "Missing id");
             }
-            const result = this.noticeDatabase.getNoticeById(noticeId);
+            let result = await this.noticeDatabase.getNoticeById(noticeId);
             if (!result) {
                 throw new CustomError(404, "Notice not found");
             }
+            result = dateFormatter([result])[0]
             return result
         } catch (error) {
             if (error instanceof CustomError) {

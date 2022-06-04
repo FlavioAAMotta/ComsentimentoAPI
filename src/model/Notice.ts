@@ -3,7 +3,7 @@ export class Notice {
         private noticeId: string,
         private noticeTitle: string,
         private noticeDescription: string,
-        private noticeOpeningDate: string,
+        public noticeOpeningDate: string,
         private noticePDFDetailsPath: string,
         private noticeStatus: boolean
     ) { }
