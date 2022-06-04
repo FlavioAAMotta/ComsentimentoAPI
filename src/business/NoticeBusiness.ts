@@ -23,11 +23,11 @@ export class NoticeBusiness {
             if (!noticeTitle || !noticeDescription || !noticeOpeningDate || !noticePDFDetails || !noticeStatus) {
                 throw new CustomError(422, "Missing input");
             }
-            if(!token){
+            if (!token) {
                 throw new CustomError(401, "Missing token in 'Authorization' header")
             }
             const validateToken = this.authenticator.getTokenData(token)
-            if(!validateToken.id){
+            if (!validateToken.id) {
                 throw new CustomError(401, "Invalid token")
             }
             const noticeId = this.idGenerator.generate();
@@ -40,7 +40,7 @@ export class NoticeBusiness {
                 noticeStatus)
             await this.noticeDatabase.createNotice(notice)
             return notice;
-        } catch (error:any) {
+        } catch (error: any) {
             if (error instanceof CustomError) {
                 throw new CustomError(error.statusCode, error.message)
             }
@@ -48,10 +48,17 @@ export class NoticeBusiness {
         }
 
     }
-    
-    getAllNotices = async()=>{
+
+    getAllNotices = async (limit: number, offset: number) => {
         try {
-            const result = this.noticeDatabase.getAllNotices();
+            if(!limit){
+                limit = 10
+            }
+            if(!offset){
+                offset = 0
+            }
+
+            const result = this.noticeDatabase.getAllNotices(limit, offset);
             return result
         } catch (error) {
             if (error instanceof CustomError) {
@@ -60,13 +67,13 @@ export class NoticeBusiness {
         }
     }
 
-    getNoticeById = async(noticeId: string)=>{
+    getNoticeById = async (noticeId: string) => {
         try {
             if (!noticeId) {
                 throw new CustomError(422, "Missing id");
             }
             const result = this.noticeDatabase.getNoticeById(noticeId);
-            if(!result) {
+            if (!result) {
                 throw new CustomError(404, "Notice not found");
             }
             return result
@@ -90,7 +97,7 @@ export class NoticeBusiness {
                 throw new CustomError(422, "Missing input");
             }
             let noticeinDB = await this.noticeDatabase.getNoticeById(noticeId)
-            if(!noticeinDB) {
+            if (!noticeinDB) {
                 throw new CustomError(404, "Notice not found");
             }
             const notice = new Notice(
@@ -107,10 +114,10 @@ export class NoticeBusiness {
                 throw new CustomError(error.statusCode, error.message)
             }
         }
-    
+
     }
 
-    deleteNotice = async(noticeId: string)=>{
+    deleteNotice = async (noticeId: string) => {
         try {
             if (!noticeId) {
                 throw new CustomError(422, "Missing id");
@@ -123,5 +130,5 @@ export class NoticeBusiness {
             }
         }
     }
-    
+
 }

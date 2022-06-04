@@ -30,7 +30,9 @@ export class NoticeController {
 
     getAllNotices = async (req: Request, res: Response) => {
         try {
-            const result = await this.noticeBusiness.getAllNotices()
+            const limit = Number(req.query.limit);
+            const offset = Number(req.query.offset);
+            const result = await this.noticeBusiness.getAllNotices(limit, offset)
             res.status(200).send(result)
         } catch (error: any) {
             if (error instanceof CustomError) {

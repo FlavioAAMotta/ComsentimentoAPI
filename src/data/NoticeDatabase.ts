@@ -14,10 +14,12 @@ export class NoticeDatabase extends BaseDatabase {
     }
   }
 
-  getAllNotices = async (): Promise<Notice[]> => {
+  getAllNotices = async (limit: number, offset: number): Promise<Notice[]> => {
     try {
       return await this
-        .connection(this.TABLE_NAME) as Notice[]
+        .connection(this.TABLE_NAME)
+        .offset(offset)
+        .limit(limit) as Notice[]
     } catch (error: any) {
       throw new Error(error.sqlMessage || error.message)
     }

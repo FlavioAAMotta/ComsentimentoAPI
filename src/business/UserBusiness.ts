@@ -96,17 +96,29 @@ export class UserBusiness {
         userId: string,
         userName: string,
         userEmail: string,
-        userPassword: string
+        userPassword: string,
+        token: string
     ) => {
         try {
             if (!userName && !userEmail && !userPassword) {
                 throw new CustomError(422, "Missing input");
             }
+
+            if(!token){
+                throw new CustomError(401, "Missing token in 'Authorization' header")
+            }
+            const validateToken = this.authenticator.getTokenData(token)
+            if(!validateToken.id){
+                throw new CustomError(401, "Invalid token")
+            }
+            if(validateToken.id != userId){
+                throw new CustomError(409, "You are not authorized to update this user")
+            }
+
             let userInDB = await this.userDatabase.getUserById(userId)
             if (!userInDB) {
                 throw new CustomError(404, "User not found");
             }
-
             const hashedPassword = await this.hashGenerator.hash(userPassword);
 
             let updatedUser = new User(

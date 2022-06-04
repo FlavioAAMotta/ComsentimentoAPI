@@ -67,11 +67,14 @@ export class UserController {
         try {
             const userId = req.params.id
             const { userName, userEmail, userPassword } = req.body;
+            const token = req.headers.authorization as string;
             const result = await this.userBusiness.updateUser(
                 userId,
                 userName,
                 userEmail,
-                userPassword);
+                userPassword,
+                token
+            );
             res.status(200).send(result)
         } catch (error: any) {
             if (error instanceof CustomError) {
