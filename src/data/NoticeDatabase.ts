@@ -19,6 +19,7 @@ export class NoticeDatabase extends BaseDatabase {
       return await this
         .connection(this.TABLE_NAME)
         .offset(offset)
+        .orderBy('noticeOpeningDate', 'desc')
         .limit(limit) as Notice[]
     } catch (error: any) {
       throw new Error(error.sqlMessage || error.message)
