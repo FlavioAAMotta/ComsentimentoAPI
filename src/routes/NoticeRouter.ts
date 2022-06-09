@@ -18,3 +18,4 @@ noticeRouter.get("/", noticeController.getAllNotices);
 noticeRouter.get("/:id", noticeController.getNoticeById);
 noticeRouter.put("/:id", noticeController.updateNotice);
 noticeRouter.delete("/:id", noticeController.deleteNotice);
+
