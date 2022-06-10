@@ -31,7 +31,7 @@ app.post("/pdfFile", upload.single("file"), (req, res) => {
   return res.send(fileName)
 })
 
-const server = app.listen(process.env.SERV_PORT || 3003, () => {
+const server = app.listen(process.env.PORT || 3003, () => {
   if (server) {
     const address = server.address() as AddressInfo;
     console.log(`Server running at http://localhost:${address.port}`);
