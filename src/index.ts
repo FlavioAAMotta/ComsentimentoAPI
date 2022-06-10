@@ -4,6 +4,9 @@ import cors from "cors";
 import { noticeRouter } from "./routes/NoticeRouter";
 import { userRouter } from "./routes/UserRouter";
 import multer from "multer";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
