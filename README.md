@@ -18,7 +18,7 @@ API para comunicação com front
 - Pronto, a API está pronta para ouvir as requisições 
 
 ## Documentação
-Link do postman disponível no dia 13/06
+https://documenter.getpostman.com/view/20306176/Uz5NjZ3Z
 
 ## Prints do projeto
 ### Modelo do banco
