@@ -32,10 +32,10 @@ export class UserBusiness {
             await this.userDatabase.createUser(newUser)
             const token = this.authenticator.generateToken({ id: userId })
             return token;
-        } catch (error) {
-            if (error instanceof CustomError) {
-                throw new CustomError(error.statusCode, error.message)
-            }
+        } catch (error:any) {
+            throw new CustomError(
+                error.statusCode || 500,
+                error.message || "Erro interno")
         }
     }
 

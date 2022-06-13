@@ -6,11 +6,11 @@ export class User {
         public userPassword: string        
     ) { }
 
-    getId = (): string =>{
+    getId(): string{
         return this.userId;
     }
     
-    getName = (): string =>{
+    getName(): string {
         return this.userName;
     }
 
@@ -18,8 +18,7 @@ export class User {
         return this.userEmail;
     }
 
-    getPassword = (): string=>{
-        console.log("oi")
+    getPassword(): string{
         return this.userPassword;
     }
 
