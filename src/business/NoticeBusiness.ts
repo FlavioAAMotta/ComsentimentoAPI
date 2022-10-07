@@ -5,7 +5,7 @@ import { IdGenerator } from "./../services/idGenerator";
 import { NoticeDatabase } from "./../data/NoticeDatabase";
 import { CustomError } from "./../errors/CustomError";
 import { dateFormatter } from "../Utils/DateFormatter";
-import { NoticesDTO } from "../types/noticesDTO";
+import { NoticesDTO } from '../types/NoticesDTO';
 export class NoticeBusiness {
   constructor(
     private noticeDatabase: NoticeDatabase,
