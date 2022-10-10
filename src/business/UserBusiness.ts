@@ -21,6 +21,13 @@ export class UserBusiness {
             if (!userName || !userEmail || !userPassword) {
                 throw new CustomError(422, "Missing input");
             }
+            if (userEmail.indexOf("@") === -1) {
+                throw new CustomError(422, "Invalid email");
+            }
+            const registeredUser = await this.userDatabase.findUserByEmail(userEmail);
+            if (registeredUser) {
+                throw new CustomError(409, "Email already registered");
+            }
             const userId = this.idGenerator.generate();
             const hashedPassword = await this.hashGenerator.hash(userPassword);
             let newUser = new User(

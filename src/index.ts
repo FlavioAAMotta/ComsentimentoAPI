@@ -12,9 +12,6 @@ const app = express();
 
 app.use(express.json());
 app.use(cors())
-app.use("/", (req, res) => {
-  res.send("Hello World");
-});
 app.use("/users", userRouter);
 app.use("/notices", noticeRouter);
 let fileName = ""
